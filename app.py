@@ -214,7 +214,8 @@ html.Div([
 
 	
 	
-]),	
+],style={'width': '100%','display': 'inline-block'
+}),	
 	
 	
 ],
