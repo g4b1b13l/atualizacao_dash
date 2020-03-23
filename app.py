@@ -24,7 +24,8 @@ external_stylesheets = ['https://codepen.io/g4b1b13l/pen/VwwrYdL.css'] # Esse eh
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets,meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=0"}
-    ])
+    ]
+    )
 server = app.server
 
 app.title = 'Controle_Alcool_saida'
@@ -37,6 +38,7 @@ app.layout = html.Div([
 
 
 html.Div([
+
 
 		html.Div(
 
@@ -54,7 +56,7 @@ html.Div([
 	        'text-align': 'center',
 	        #'border-radius': '2px',
 	        #'display': 'flex',
-	        #'margin-left': '0',
+	        #'margin-left': '0', 
 	        } 
 
 	        ), 
@@ -213,23 +215,22 @@ html.Div([
 	),
 
 	
+
 	
-],style={'width': '100%'}),	
 	
-	
-],
-
-            className='row'),
-
+	],style={'width': '100%',
+}
+	),
 
 
 
+],className='row'),	
 
 
 
 
-],  style={'width': '100%',
-            'display': 'inline-block'})
+],  style={'width': '100%','display': 'inline-block'
+})
 
 
 
