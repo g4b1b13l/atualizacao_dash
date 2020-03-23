@@ -22,7 +22,9 @@ external_stylesheets = ['https://codepen.io/g4b1b13l/pen/VwwrYdL.css'] # Esse eh
 																		# Copiei quase tudo do original que é um de chris num sei q la
 																		#Criei um no meu nome so caso ele decida excluir ou algo do tipo eu n perder 
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets,meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=1"}
+    ])
 server = app.server
 
 app.title = 'Controle_Alcool_saida'
@@ -34,7 +36,7 @@ app.title = 'Controle_Alcool_saida'
 app.layout = html.Div([  
 
 
-
+html.Div([
 
 		html.Div(
 
@@ -212,7 +214,7 @@ html.Div([
 
 	
 	
-	
+]),	
 	
 	
 ],
