@@ -13,7 +13,9 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import dash_bootstrap_components as dbc
-
+import base64
+ufpb_image = base64.b64encode(open('logo_ufpb.jpeg', 'rb').read())
+cear_image = base64.b64encode(open('logo_ufpb.jpeg', 'rb').read())
 now = datetime.now()
 
 alo=dbc.themes.BOOTSTRAP
@@ -28,7 +30,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets,meta_tags=[
     )
 server = app.server
 
-app.title = 'Controle_Alcool_saida'
+app.title = 'Controle_Alcool_saida'    
 
 
 
@@ -37,29 +39,60 @@ app.title = 'Controle_Alcool_saida'
 app.layout = html.Div([  
 
 
-html.Div([
+		 html.Div(id='div_topo',children=[
+
+                html.Img(id='img_logo_ufpb'
+                        ,src='data:image/png;base64,{}'.format(ufpb_image.decode())
+                        ,style={'display': 'block','height':'70px','position':'absolute','left':'50px','top':'20px'
+                        }),
+
+                       html.H5('Doação ao Governo do Estado da Paraíba do Volume de 31.460 litros solicitados'),
+                       html.H5(	'pela Secretaria do Estado da Paraíba para combate ao Covid-19'),
 
 
-		html.Div(
+                html.Img(id='img_logo_cear'
+                        ,src='data:image/png;base64,{}'.format(cear_image.decode())
+                        ,style={'display': 'block','height':'70px','position':'absolute','right':'50px','top':'20px'
+                      }),
 
-	        [html.H1(children= 'Controle Álcool em gel'),
+            ],
+                
+            style={'textAlign':'center'
+                  ,'border': '2px solid lightgray'
+                  ,'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+                  ,'background-color':'#fffffff'}
+            ),
+
+	   	#html.Div(children=[
+        #                html.H5('Doação ao Governo do Estado da Paraíba do Volume de 31.460 litros solicitados'),
+        #                html.H5(	'pela Secretaria do Estado da Paraíba para combate ao Covid-19')
+                        #html.P('AS INFORMAÇÕES ANEXAS SÃO RETIRADAS DOS RECIBOS DO SAPCANA ENVIADOS AO MAPA. P/ EMPRESAS ASSOCIADAS'),
+                        #html.P('Elaboração: Sindalcool | Posição até 29/02/2020')
+        #            ],style={'textAlign': 'center'
+        #                     ,'border': '2px solid lightgray'
+        #                     ,'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+        #                     ,'background-color':'#eefefe'}),
+
+		#html.Div(
+
+	     #   [html.H1(children= 'Controle Álcool em gel'),
 
 	       
-	        ]
-	              , 
+	      #  ]
+	       #       , 
 
-	         style={
-	        'font-size': '5pt',
+	       #  style={
+	        #'font-size': '5pt',
 	        #'height': '75px',
-	        'margin': '-10px -10px -10px',
-	        'background-color': '#ADD8E6',
-	        'text-align': 'center',
+	        #'margin': '-10px -10px -10px',
+	        #'background-color': '#ADD8E6',
+	        #'text-align': 'center',
 	        #'border-radius': '2px',
 	        #'display': 'flex',
 	        #'margin-left': '0', 
-	        } 
+	        #} 
 
-	        ), 
+	        #), 
 
 
 html.Div([
@@ -132,10 +165,10 @@ html.Div([
 	],
 	style={
 	    	'margin-left': '150px',
-	    	'margin-´top' : '-35px'
+	    	#'margin-´top' : '-100px'
 	    	#'width': '50%'
 	        },
-	        className='col s12 m6'
+	        className='five columns'
 
 	),
 
@@ -206,42 +239,92 @@ html.Div([
 		html.Span(id="F", style={"vertical-align": "middle"}),
 
 	],
-	style={
-	    	'margin-left': '700px',
-	    	'margin-top':'-553px', 
+	#style={
+	#    	'margin-left': '700px',
+	  # 	'margin-top':'-10px', 
+	     #  },
+	className='five columns'
+
+	),
+
+	
+
+	
+	
+	],className='row',	style={
+	  #	'margin-left': '700px',
+	   	'margin-top':'-10px', 
 	       },
-	className='col s12 m6'
-
-	),
-
-	
-
-	
-	
-	],style={'width': '100%',
-}
 	),
 
 
 
-],className='row'),	
+
+html.Div(children=[
+
+                        html.P('AS INFORMAÇÕES ANEXAS SÃO RETIRADAS DOS RECIBOS DO SAPCANA ENVIADOS AO MAPA. P/ EMPRESAS ASSOCIADAS'),
+                        html.P('Elaboração: Sindalcool | Posição até 29/02/2020')
+                    ],style={'textAlign': 'center'
+                             ,'border': '2px solid lightgray'
+                             ,'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+                             ,'background-color':'#eefefe'
+                             , 'margin-top' : '30px'}),
+
+dcc.Checklist(
+    id='check',
+    options=[   
+    {'label': '', 'value': 'ativado'},
 
 
+    ],
+    value=['d'],
+    labelStyle={'display': 'none','margin-top': '30px'}
+    ),
+],)
 
 
-],  style={'width': '100%','display': 'inline-block'
-})
+def limpando_giasin_1():
+
+
+	@app.callback(
+	    Output(component_id='input_giasa', component_property='value'),    
+	    [Input('check', 'value'),],
+	    state=[State(component_id='input_giasa', component_property='value'),State(component_id='input_giasa2', component_property='value'),
+	    State(component_id='example-output', component_property='children')
+	    ])
+
+		
+	def limpando_giasa_1(n_clicks, qtd,destino, texto):
+		print('aff',flush=True)
+		return ''
+
+def limpando_giasin_2():
+
+	@app.callback(
+		    Output(component_id='input_giasa2', component_property='value'),    
+		    [Input('check', 'value'),],
+		    state=[State(component_id='input_giasa', component_property='value'),State(component_id='input_giasa2', component_property='value'),
+		    State(component_id='example-output', component_property='children')])
+
+			
+	def limpando_giasa_2(n_clicks,qtd,destino,texto):
+			print('oxe', flush=True)
+
+			return ''
+
 
 
 
 @app.callback(
-    Output(component_id='example-output', component_property='children'),    
-    [Input('1', 'n_clicks'),],
+    [Output(component_id='example-output', component_property='children'),Output(component_id='input_giasa', component_property='value'),
+    Output(component_id='input_giasa2', component_property='value')],    
+    [Input('1', 'n_clicks'),
+		],
     state=[State(component_id='input_giasa', component_property='value'),
     State(component_id='input_giasa2', component_property='value')])
 
 
-def update_output_div(n_clicks, input_value, emailzin):
+def update_output_div(n_clicks,input_value, emailzin):
 
 	mydb=psy.connect (
 	host='ec2-54-235-100-99.compute-1.amazonaws.com',
@@ -258,26 +341,35 @@ def update_output_div(n_clicks, input_value, emailzin):
 
 	ultimo_registro = df.tail(1)
 
+	#if texto_qtd is None or texto_destino is None:
+#		return 'Preencher os dados'
 
+#	if n_clicks is None:
+#		return "Preencher os dados"
 
 	if n_clicks is None:
-		return "Preencher os dados"
+		print('')
 	else:
 		if(input_value and emailzin):
+			print('chegou',flush=True)
 			qtd_saida = input_value
 			total_liq = ultimo_registro['total_liq'].sum() - qtd_saida
 			destino = emailzin
 			mycursor.execute('''INSERT INTO public."GIASA" (total_liq,quantidade_saida,destino)  VALUES (%s,%s,%s)''',(total_liq,qtd_saida, destino))
 			mydb.commit()
-			return 'Giasa atualizado com sucesso'
+			#limpando_giasin_1()
+			#limpando_giasin_2()
+			return ['Giasa atualizado com sucesso','','' ]
 
 
 
 
 
 @app.callback(
-    Output(component_id='B', component_property='children'),    
-    [Input('2', 'n_clicks'),],
+   [ Output(component_id='B', component_property='children'),  Output(component_id='input_japungu', component_property='value'),
+       Output(component_id='input_japungu2', component_property='value')],
+    [Input('2', 'n_clicks'),
+	],
     state=[State(component_id='input_japungu', component_property='value'),
     State(component_id='input_japungu2', component_property='value')])
 
@@ -288,7 +380,6 @@ def update_output_div(n_clicks, input_value, emailzin):
 	user = 'mhxcrjdnckxtbr',
 	password='041d51b54231eb4e36b2a8d58f5ae16bc5cfaab2303d426676580f62e52ebcc1',
 	database='d9k1k422mp16r5')
-
 	mycursor=mydb.cursor()
 	mycursor.execute('''select * from public."JAPUNGU" ''')
 	myresult= mycursor.fetchall()
@@ -298,10 +389,9 @@ def update_output_div(n_clicks, input_value, emailzin):
 
 	ultimo_registro = df.tail(1)
 
-
 	if n_clicks is None:
 
-		return "Preencher os dados"
+		print('')
 	else:
 		if(input_value and emailzin):
 			qtd_saida = input_value
@@ -313,12 +403,14 @@ def update_output_div(n_clicks, input_value, emailzin):
 	                (%s,%s,%s)
 	                ''',(total_liq,qtd_saida, destino))
 			mydb.commit()
-			return 'JAPUNGU atualizado com sucesso'
+			return ['JAPUNGU atualizado com sucesso','','']
 
 
 @app.callback(
-    Output(component_id='C', component_property='children'),    
-    [Input('3', 'n_clicks'),],
+    [Output(component_id='C', component_property='children'),  Output(component_id='input_miriri', component_property='value'),
+       Output(component_id='input_miriri2', component_property='value')   ],
+    [Input('3', 'n_clicks'),
+	],
     state=[State(component_id='input_miriri', component_property='value'),
     State(component_id='input_miriri2', component_property='value')])
 
@@ -340,7 +432,7 @@ def update_output_div(n_clicks, input_value, emailzin):
 	ultimo_registro = df.tail(1)
 
 	if n_clicks is None:
-		return "Preencher os dados"
+		print('')
 	else:
 		if(input_value and emailzin):
 			qtd_saida = input_value
@@ -352,16 +444,18 @@ def update_output_div(n_clicks, input_value, emailzin):
 	                (%s,%s,%s)
 	                ''',(total_liq,qtd_saida, destino))
 			mydb.commit()
-			return 'MIRIRI atualizado com sucesso'
+			return ['MIRIRI atualizado com sucesso','','']
 
 @app.callback(
-    Output(component_id='D', component_property='children'),    
-    [Input('4', 'n_clicks'),],
+   [ Output(component_id='D', component_property='children'),    Output(component_id='input_m_alegre', component_property='value'),
+          Output(component_id='input_m_alegre2', component_property='value') ],
+    [Input('4', 'n_clicks'),
+	],
     state=[State(component_id='input_m_alegre', component_property='value'),
     State(component_id='input_m_alegre2', component_property='value')])
 
 
-def update_output_div(n_clicks, input_value, emailzin):
+def update_output_div(n_clicks,input_value, emailzin):
 	mydb=psy.connect (
 	host='ec2-54-235-100-99.compute-1.amazonaws.com',
 	user = 'mhxcrjdnckxtbr',
@@ -379,7 +473,7 @@ def update_output_div(n_clicks, input_value, emailzin):
 
 
 	if n_clicks is None:
-		return "Preencher os dados"
+		print('')
 	else:
 		if(input_value and emailzin):
 			qtd_saida = input_value
@@ -391,13 +485,15 @@ def update_output_div(n_clicks, input_value, emailzin):
 	                (%s,%s,%s)
 	                ''',(total_liq,qtd_saida, destino))
 			mydb.commit()
-			return 'M. ALEGRE atualizado com sucesso'
+			return ['M. ALEGRE atualizado com sucesso','','']
 
 
 
 @app.callback(
-    Output(component_id='E', component_property='children'),    
-    [Input('5', 'n_clicks'),],
+    [Output(component_id='E', component_property='children'),     Output(component_id='input_tabu', component_property='value'),
+              Output(component_id='input_tabu2', component_property='value')],
+    [Input('5', 'n_clicks'),
+],
     state=[State(component_id='input_tabu', component_property='value'),
     State(component_id='input_tabu2', component_property='value')])
 
@@ -415,14 +511,14 @@ def update_output_div(n_clicks, input_value, emailzin):
 	colnames = [desc[0] for desc in mycursor.description]
 
 	df = pd.DataFrame(data=myresult, columns=colnames )
-
 	ultimo_registro = df.tail(1)
 
 
 	if n_clicks is None:
-		return "Preencher os dados"
+		print('')
 	else:
 		if(input_value and emailzin):
+
 			qtd_saida = input_value
 			total_liq = ultimo_registro['total_liq'].sum() - qtd_saida
 			destino = emailzin
@@ -432,12 +528,14 @@ def update_output_div(n_clicks, input_value, emailzin):
 	                (%s,%s,%s)
 	                ''',(total_liq,qtd_saida, destino))
 			mydb.commit()
-			return 'TABU atualizado com sucesso'
+			return ['TABU atualizado com sucesso','','']
 
 
 @app.callback(
-    Output(component_id='F', component_property='children'),    
-    [Input('6', 'n_clicks'),],
+    [Output(component_id='F', component_property='children'),  Output(component_id='input_d_padua', component_property='value'),
+                  Output(component_id='input_d_padua2', component_property='value')  ],
+    [Input('6', 'n_clicks'),
+	],
     state=[State(component_id='input_d_padua', component_property='value'),
     State(component_id='input_d_padua2', component_property='value')])
 
@@ -460,7 +558,7 @@ def update_output_div(n_clicks, input_value, emailzin):
 
 
 	if n_clicks is None:
-		return "Preencher os dados"
+		print('')
 	else:
 		if(input_value and emailzin):
 			qtd_saida = input_value
@@ -472,9 +570,15 @@ def update_output_div(n_clicks, input_value, emailzin):
 	                (%s,%s,%s)
 	                ''',(total_liq,qtd_saida, destino))
 			mydb.commit()
-			return 'D PADUA atualizado com sucesso'
+			return ['D PADUA atualizado com sucesso','','']
+
+
+
+
+
+
 
 
 
 if(__name__ == '__main__'):
-    app.run_server(debug=True,port=3052) 
+    app.run_server(debug=True,port=3080) 
